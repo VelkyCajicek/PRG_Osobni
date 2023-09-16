@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,9 +39,63 @@ namespace Calculator
              */
 
             //Tento komentar smaz a misto nej zacni psat svuj prdacky kod.
-            int input = Convert.ToInt32(Console.ReadLine());
 
-            Console.ReadKey(); //Toto nech jako posledni radek, aby se program neukoncil ihned, ale cekal na stisk klavesy od uzivatele.
+            float check; float FloInp2; float FloInp1;
+            Console.WriteLine("Tohle je kalkulacka, napis prvni cislo");
+            while (true)
+            {
+                string input1 = Console.ReadLine();
+                bool success1 = float.TryParse(input1, out check);
+                if (success1 == true)
+                {
+                    FloInp1 = float.Parse(input1);
+                    Console.WriteLine("A ted napis druhe cislo");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("To neni cislo, napis cislo");
+                }
+            }
+            while (true)
+                {
+                string input2 = Console.ReadLine();
+                bool success2 = float.TryParse(input2, out check);
+                if (success2 == true)
+                {
+                    FloInp2 = float.Parse(input2);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("To neni cislo, napis cislo");
+                }
+                
+            }
+
+            Console.WriteLine("Ted napis ciselnou operaci");
+            string znamenko = Console.ReadLine();
+            while (true)
+            {
+                    if (znamenko ==  "+")
+                    {
+                        Console.WriteLine("{0} + {1} = {2}", FloInp1, FloInp2, FloInp1 + FloInp2);
+                    }
+                    if (znamenko == "-")
+                    {
+                        Console.WriteLine("{0} - {1} = {2}", FloInp1, FloInp2, FloInp1 - FloInp2);
+                    }
+                    if (znamenko == "*")
+                    {
+                        Console.WriteLine("{0} * {1} = {2}", FloInp1, FloInp2, FloInp1 * FloInp2);
+                    }
+                    if (znamenko == "/")
+                    {
+                        Console.WriteLine("{0} / {1} = {2}", FloInp1, FloInp2, FloInp1 / FloInp2);
+                    }
+                Console.ReadKey(); //Toto nech jako posledni radek, aby se program neukoncil ihned, ale cekal na stisk klavesy od uzivatele.         
+            }
+            
         }
     }
 }
