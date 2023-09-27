@@ -50,7 +50,7 @@ namespace Calculator
                 Numbs.Add(s);
             }
             //Getting rid of brackets
-            if(bracketCheck == true)
+            if (bracketCheck == true)
             {
                 for (int p = 0; p < Numbs.Count; p++)
                 {
@@ -60,7 +60,7 @@ namespace Calculator
                         List<string> realOperatorsInBrackets = new List<string>();
                         List<string> NumbsInBrackets = new List<string>();
                         List<float> NumbFloatsInBrackets = new List<float>();
-                        
+
                         Numbs[p] = Numbs[p].Replace("(", "").Replace(")", "");
                         String[] seperatorInBrackets = { "p", "m", "t", "d" };
                         count = 50;
@@ -105,7 +105,7 @@ namespace Calculator
                 if (Position == '*') { realOperators.Add("*"); }
                 if (Position == '/') { realOperators.Add("/"); }
             }
- 
+
             //Calculating, Line 128 first index + 1 to not change index of first position
             NumbFloats = Numbs.Select(float.Parse).ToList();
             while (realOperators.Count != 0)
@@ -124,7 +124,6 @@ namespace Calculator
             }
             NumbFloats.ForEach(Console.WriteLine);
             Console.ReadKey();
-
         }
     }
 }
