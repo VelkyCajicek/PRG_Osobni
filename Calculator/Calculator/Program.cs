@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 /*
@@ -17,16 +18,44 @@ namespace Calculator
         static void Main(string[] args)
         {
             //Defining shit
+
             List<string> realOperators = new List<string>();
             List<string> Numbs = new List<string>();
             List<float> NumbFloats = new List<float>();
-            float partialResult = 0; int firstStringPosition = 0; int secondStringPosition = 0; bool bracketCheck = false;
+            List<string> jmenoPromenne = new List<string>();
+            List<string> hodnotaPromenne = new List<string>();
+            float partialResult = 0; int firstStringPosition = 0; int secondStringPosition = 0; bool bracketCheck = false; string pattern = "[A-Za-z]=[0-9]+";
+            int counter = 0; string input; Regex promenna = new Regex(pattern);
 
-            string input = Console.ReadLine();
+            //Kontrola jestli chce nastavit promennou
 
-            //Making sure there is no BS
-            if (input.Last() == '=') { input = input.Remove(input.Length - 1); }
+            while (true)
+            {
+                input = Console.ReadLine();
+                input = input.Replace(" ", "");
+                if (promenna.IsMatch(input))
+                {
+                    jmenoPromenne.Add(input[0].ToString());
+                    input = input.Remove(0, 2);
+                    string cislo = input;
+                    hodnotaPromenne.Add(input);
+                    Console.WriteLine("Promenna {0} ma ted hodnotu {1}", jmenoPromenne[counter], hodnotaPromenne[counter]);
+                    counter++;
+                }
+                else { break; }
+            }
+            input = input.Replace(" ", "");
+            if (input.Contains("pi") == true) { input = input.Replace("pi", Math.PI.ToString()); }
+            for (int i = 0; i < jmenoPromenne.Count; i++)
+            {
+                if (input.Contains(jmenoPromenne[i]))
+                {
+                    input = input.Replace(jmenoPromenne[i], hodnotaPromenne[i]);
+                }
+            }
+
             //Zavorky
+
             string inputModBracket = input;
             if (inputModBracket.Contains('(') == true) { bracketCheck = true; }
             while (inputModBracket.Contains('(') == true)
@@ -41,7 +70,9 @@ namespace Calculator
                 input = input.Replace(Bracket, BracketMod);
                 inputModBracket = inputModBracket.Replace(Bracket, "");
             }
+
             //Finding the numbers in input
+
             String[] seperator = { "+", "-", "*", "/" };
             int count = 50;
             String[] strlist = input.Split(seperator, count, StringSplitOptions.RemoveEmptyEntries);
@@ -49,7 +80,9 @@ namespace Calculator
             {
                 Numbs.Add(s);
             }
+
             //Getting rid of brackets
+
             if (bracketCheck == true)
             {
                 for (int p = 0; p < Numbs.Count; p++)
@@ -97,6 +130,7 @@ namespace Calculator
                 }
             }
             //Finding the operations in input 
+
             for (int i = 0; i < input.Length; i++)
             {
                 char Position = input[i];
@@ -107,6 +141,7 @@ namespace Calculator
             }
 
             //Calculating, Line 128 first index + 1 to not change index of first position
+
             NumbFloats = Numbs.Select(float.Parse).ToList();
             while (realOperators.Count != 0)
             {
