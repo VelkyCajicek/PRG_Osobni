@@ -33,22 +33,10 @@ namespace _2DArrayHomework
                     string inputCheck = input.Substring(3, 1);
                     switch (inputCheck)
                     {
-                        case "1":
-                            Switch(Ary1, input);
-                            WriteArray(Ary1);
-                            break;
-                        case "2":
-                            Switch(Ary2, input);
-                            WriteArray(Ary2);
-                            break;
-                        case "3":
-                            Switch(Ary3, input);
-                            WriteArray(Ary3);
-                            break;
-                        case "4":
-                            Switch(Ary4, input);
-                            WriteArray(Ary4);
-                            break;
+                        case "1":Switch(Ary1, input); WriteArray(Ary1); break;
+                        case "2":Switch(Ary2, input); WriteArray(Ary2); break;
+                        case "3":Switch(Ary3, input); WriteArray(Ary3); break;
+                        case "4":Switch(Ary4, input); WriteArray(Ary4); break;
                     }
                 }
                 if (Regex.IsMatch(input, @"^create\[[0-9]+x[0-9]+\]$") == true) // Create[5x6]
@@ -102,23 +90,73 @@ namespace _2DArrayHomework
                 }
                 if (input.Contains("+") || input.Contains("-") || input.Contains("*"))
                 {
-                    string inputReserve = input.Substring(0, 4);
-                    string num = input.Substring(5, input.Length - 5);
-                    input = Regex.Replace(input, @"[A-Za-z0-9]+", "");
-                    int z = 0;
-                    switch (input)
+                    if (input.Contains("+"))
                     {
-                        case "+": z = 0; break;
-                        case "-": z = 1; break;
-                        case "*": z = 2; break;
+                        int position = input.IndexOf("+");
+                        int[,] firstArray = new int[0, 0]; int[,] secondArray = new int[0, 0];
+                        string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
+                        string secondPart = input.Substring(position + 1, input.Length - position - 1);
+                        switch (firstPart)
+                        {
+                            case "ary1": firstArray = Ary1; break;
+                            case "ary2": firstArray = Ary2; break;
+                            case "ary3": firstArray = Ary3; break;
+                            case "ary4": firstArray = Ary4; break;
+                        }
+                        switch (secondPart)
+                        {
+                            case "ary1": secondArray = Ary1; break;
+                            case "ary2": secondArray = Ary2; break;
+                            case "ary3": secondArray = Ary3; break;
+                            case "ary4": secondArray = Ary4; break;
+                        }
+                        Ary4 = ArrayAddition(firstArray, secondArray);
                     }
-                    switch (inputReserve)
+                    if (input.Contains("-"))
                     {
-                        case "ary1": Calculation(Ary1, z, num); WriteArray(Ary1); break;
-                        case "ary2": Calculation(Ary2, z, num); WriteArray(Ary2); break;
-                        case "ary3": Calculation(Ary3, z, num); WriteArray(Ary3); break;
-                        case "ary4": Calculation(Ary4, z, num); WriteArray(Ary4); break;
+                        int position = input.IndexOf("-");
+                        int[,] firstArray = new int[0, 0]; int[,] secondArray = new int[0, 0];
+                        string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
+                        string secondPart = input.Substring(position + 1, input.Length - position - 1);
+                        switch (firstPart)
+                        {
+                            case "ary1": firstArray = Ary1; break;
+                            case "ary2": firstArray = Ary2; break;
+                            case "ary3": firstArray = Ary3; break;
+                            case "ary4": firstArray = Ary4; break;
+                        }
+                        switch (secondPart)
+                        {
+                            case "ary1": secondArray = Ary1; break;
+                            case "ary2": secondArray = Ary2; break;
+                            case "ary3": secondArray = Ary3; break;
+                            case "ary4": secondArray = Ary4; break;
+                        }
+                        Ary4 = ArraySubtraction(firstArray, secondArray);
                     }
+                    if (input.Contains("*"))
+                    {
+                        int position = input.IndexOf("*");
+                        int[,] firstArray = new int[0, 0]; int[,] secondArray = new int[0, 0];
+                        string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
+                        string secondPart = input.Substring(position + 1, input.Length - position - 1);
+                        switch (firstPart)
+                        {
+                            case "ary1": firstArray = Ary1; break;
+                            case "ary2": firstArray = Ary2; break;
+                            case "ary3": firstArray = Ary3; break;
+                            case "ary4": firstArray = Ary4; break;
+                        }
+                        switch (secondPart)
+                        {
+                            case "ary1": secondArray = Ary1; break;
+                            case "ary2": secondArray = Ary2; break;
+                            case "ary3": secondArray = Ary3; break;
+                            case "ary4": secondArray = Ary4; break;
+                        }
+                        Ary4 = ArrayMultiplication(firstArray, secondArray);
+                    }
+                    Console.WriteLine("Result saved to Ary4");
                 }
                 if(Regex.IsMatch(input, @"^displayall$"))
                 {
@@ -155,9 +193,12 @@ namespace _2DArrayHomework
                     }
                     Console.WriteLine("Array transposed along main diagonal");
                 }
-                if( Regex.IsMatch(input, @"^1111$"))
+                if(Regex.IsMatch(input, @"^clearall$")) { Ary1 = new int[0, 0]; Ary2 = new int[0, 0]; Ary3 = new int[0, 0]; Ary4 = new int[0, 0]; Console.WriteLine("Cleared all"); }
+                if(Regex.IsMatch(input, @"^2222$"))
                 {
-                    Ary4 = ArrayAddition(Ary1, Ary2);
+                    Ary1 = new int[3, 3]; Ary2 = new int[3, 3];
+                    Ary1 = FillArray(Ary1); Ary2 = FillArray(Ary2);
+                    Console.WriteLine("Done");
                 }
             }
             Console.ReadKey();
@@ -166,8 +207,7 @@ namespace _2DArrayHomework
         {
             int[,] newArray = new int[array.GetLength(0), array.GetLength(1)];
             for (int j = 0; j < array.GetLength(0); j++)
-                for (int r = 0; r < array.GetLength(1); r++)
-                    newArray[j, r] = array[r, j];
+                for (int r = 0; r < array.GetLength(1); r++) newArray[j, r] = array[r, j];
             return newArray;
         }
         static int[,] FillArray(int[,] array)
@@ -213,15 +253,16 @@ namespace _2DArrayHomework
         {
             Console.BackgroundColor = ConsoleColor.White; Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("Command list:\n");
-            Console.WriteLine("Creating array:                                                    Displaying arrays:                                          \n");
+            Console.WriteLine("Creating array:                                                    Displaying arrays:                                    \n");
             Console.ResetColor();
             Console.WriteLine("cfa - Creates all arrays and fill them randomly                    DisplayAll - Show all arrays");
-            Console.WriteLine("Create[a x b] - Prepares a array with parameters a and b           DisplayAry(1-4) - Displays specified array\n");
+            Console.WriteLine("Create[a x b] - Prepares a array with parameters a and b           DisplayAry(1-4) - Displays specified array            \n");
             Console.BackgroundColor = ConsoleColor.White; Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine("Array manipulation:                                                Math: (Code is finished but not yet implemented :/)                                                      \n");
+            Console.WriteLine("Array manipulation:                                                Math:                                                 \n");
             Console.ResetColor();
             Console.WriteLine("Ary(1-4) [x, y][m, n] - Switch position of number in array         Operations (+,-,*) between two arrays E.g. Ary1 * Ary2");
             Console.WriteLine("Trn[NameOfArray] - Transposes the array along the main diagonal    Operations (+,-,*) between nums and array E.g. Ary1 + 1");
+            Console.WriteLine("ClearAll - Clears all arrays");
             Console.WriteLine();
         }
         static void Calculation(int[,] array, int z, string num)
