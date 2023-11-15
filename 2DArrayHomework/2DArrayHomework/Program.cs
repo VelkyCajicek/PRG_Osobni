@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -86,6 +87,34 @@ namespace _2DArrayHomework
                         case "ary2": Ary2 = Array0; Console.WriteLine("Array saved to Ary2"); break;
                         case "ary3": Ary3 = Array0; Console.WriteLine("Array saved to Ary3"); break;
                         case "ary4": Ary4 = Array0; Console.WriteLine("Array saved to Ary4"); break;
+                    }
+                }
+                if (Regex.IsMatch(input, @"^switchrowary[0-9]+\[[0-9]+,[0-9]+\]$"))
+                {
+                    input = Regex.Replace(input, "[^0-9]", "");
+                    int ArrayChooser = int.Parse(input[0].ToString());
+                    int nRowSwap = int.Parse(input[1].ToString());
+                    int mRowSwap = int.Parse(input[2].ToString());
+                    switch (ArrayChooser)
+                    {
+                        case 1: SwitchRow(Ary1, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                        case 2: SwitchRow(Ary2, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                        case 3: SwitchRow(Ary3, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                        case 4: SwitchRow(Ary4, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                    }
+                }
+                if (Regex.IsMatch(input, @"^switchcolary[0-9]+\[[0-9]+,[0-9]+\]$"))
+                {
+                    input = Regex.Replace(input, "[^0-9]", "");
+                    int ArrayChooser = int.Parse(input[0].ToString());
+                    int nRowSwap = int.Parse(input[1].ToString());
+                    int mRowSwap = int.Parse(input[2].ToString());
+                    switch (ArrayChooser)
+                    {
+                        case 1: SwitchColoumn(Ary1, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                        case 2: SwitchColoumn(Ary2, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                        case 3: SwitchColoumn(Ary3, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                        case 4: SwitchColoumn(Ary4, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
                     }
                 }
                 if (input.Contains("+") || input.Contains("-") || input.Contains("*"))
@@ -234,6 +263,26 @@ namespace _2DArrayHomework
                 Console.Write("}\n");
             }
         }
+        static int[,] SwitchRow(int[,] array, int nRowSwap, int mRowSwap)
+        {
+            for (int i = 0; i < array.GetLength(1); i++)
+            {
+                int temp = array[nRowSwap, i];
+                array[nRowSwap, i] = array[mRowSwap, i];
+                array[mRowSwap, i] = temp;
+            }
+            return array;
+        }
+        static int[,] SwitchColoumn(int[,] array, int nRowSwap, int mRowSwap)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                int temp = array[i, nRowSwap];
+                array[i, nRowSwap] = array[i, mRowSwap];
+                array[i, mRowSwap] = temp;
+            }
+            return array;
+        }
         static void Switch(int[,] array, string input)
         {
             string numbers = input.Substring(4, input.Length - 4);
@@ -261,8 +310,10 @@ namespace _2DArrayHomework
             Console.WriteLine("Array manipulation:                                                Math:                                                 \n");
             Console.ResetColor();
             Console.WriteLine("Ary(1-4) [x, y][m, n] - Switch position of number in array         Operations (+,-,*) between two arrays E.g. Ary1 * Ary2");
-            Console.WriteLine("Trn[NameOfArray] - Transposes the array along the main diagonal    Operations (+,-,*) between nums and array E.g. Ary1 + 1");
+            Console.WriteLine("Trn[Ary(1-4)] - Transposes the array along the main diagonal       Operations (+,-,*) between nums and array E.g. Ary1 + 1");
             Console.WriteLine("ClearAll - Clears all arrays");
+            Console.WriteLine("SwitchColAry(1-4)[n,m] - Swaps coloumn n with m in specified array");
+            Console.WriteLine("SwitchRowAry(1-4)[n,m] - Swaps row n with m in specified array");
             Console.WriteLine();
         }
         static void Calculation(int[,] array, int z, string num)
