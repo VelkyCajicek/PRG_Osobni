@@ -79,14 +79,14 @@ namespace _2DArrayHomework
                         Console.WriteLine("Array is full");
                     }
                     Console.WriteLine("Which array do you want to save it to? (E.g. Ary1, Ary2, Ary3, Ary4)");
-                    string inputSave = Console.ReadLine();
-                    inputSave = inputSave.ToLower();
-                    switch (inputSave)
+                    input = Regex.Replace(input, "[^0-9]", "");
+                    int ArrayChooser = int.Parse(input[0].ToString());
+                    switch (ArrayChooser)
                     {
-                        case "ary1": Ary1 = Array0; Console.WriteLine("Array saved to Ary1"); break;
-                        case "ary2": Ary2 = Array0; Console.WriteLine("Array saved to Ary2"); break;
-                        case "ary3": Ary3 = Array0; Console.WriteLine("Array saved to Ary3"); break;
-                        case "ary4": Ary4 = Array0; Console.WriteLine("Array saved to Ary4"); break;
+                        case 1: Ary1 = Array0; Console.WriteLine("Array saved to Ary1"); break;
+                        case 2: Ary2 = Array0; Console.WriteLine("Array saved to Ary2"); break;
+                        case 3: Ary3 = Array0; Console.WriteLine("Array saved to Ary3"); break;
+                        case 4: Ary4 = Array0; Console.WriteLine("Array saved to Ary4"); break;
                     }
                 }
                 if (Regex.IsMatch(input, @"^switchrowary[0-9]+\[[0-9]+,[0-9]+\]$"))

@@ -11,22 +11,37 @@ namespace SortingPlayground
         static int[] BubbleSort(int[] array)
         {
             int[] sortedArray = (int[])array.Clone(); // Řaď v tomto poli, ve kterém je výchoze zkopírováno všechno ze vstupního pole.
-
+            for (int i = 0; i < sortedArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < sortedArray.GetLength(0) - 1; j++)
+                {
+                    if (sortedArray[j] > sortedArray[j + 1])
+                    {
+                        int temp = sortedArray[j];
+                        sortedArray[j] = sortedArray[j + 1];
+                        sortedArray[j + 1] = temp;
+                    }
+                }
+            }
             return sortedArray;
         }
 
         static int[] SelectionSort(int[] array)
         {
             int[] sortedArray = (int[])array.Clone(); // Řaď v tomto poli, ve kterém je výchoze zkopírováno všechno ze vstupního pole.
+            int minimum = 0; int index = 0;
             for (int i = 0; i < sortedArray.GetLength(0); i++)
             {
-                int minimum = sortedArray[i];
-                int index = 0;
-                for (int j = 0; j < sortedArray.GetLength(0) - j; j++)
+                minimum = sortedArray[i];
+                for (int j = i; j < sortedArray.GetLength(0); j++)
                 {
-                    if (sortedArray[i+j] < minimum) { minimum = sortedArray[i+j]; index = j; }
+                    if (sortedArray[j] < minimum)
+                    {
+                        minimum = sortedArray[j]; index = j;
+                    }
                 }
-                (sortedArray[i], sortedArray[index]) = (sortedArray[index], sortedArray[i]);
+                sortedArray[index] = sortedArray[i];
+                sortedArray[i] = minimum;
             }
             return sortedArray;
         }
@@ -34,9 +49,20 @@ namespace SortingPlayground
         static int[] InsertionSort(int[] array)
         {
             int[] sortedArray = (int[])array.Clone(); // Řaď v tomto poli, ve kterém je výchoze zkopírováno všechno ze vstupního pole.
-            /*
-             * TODO: Naimplementuj insertion sort.
-             */
+            for (int i = 0; i < sortedArray.Length - 1; i++)
+            {
+                int min = i;
+                for (int j = i + 1; j < sortedArray.Length; j++)
+                {
+                    if (sortedArray[j] < sortedArray[min])
+                    {
+                        min = j;
+                    }
+                }
+                var tempVar = sortedArray[min];
+                sortedArray[min] = sortedArray[i];
+                sortedArray[i] = tempVar;
+            }
             return sortedArray;
         }
 
@@ -88,17 +114,17 @@ namespace SortingPlayground
             int[] smallArray = new int[10];
             FillArray(smallArray);
 
-            int[] mediumArray = new int[100];
-            FillArray(mediumArray);
+            //int[] mediumArray = new int[100];
+            //FillArray(mediumArray);
 
-            int[] largeArray = new int[1000];
-            FillArray(largeArray);
+            //int[] largeArray = new int[1000];
+            //FillArray(largeArray);
 
             WriteArrayToConsole(smallArray, "Malé pole");
             SortArray(smallArray, "Malé pole");
 
-            WriteArrayToConsole(mediumArray, "Střední pole");
-            SortArray(mediumArray, "Střední pole");
+            //WriteArrayToConsole(mediumArray, "Střední pole");
+            //SortArray(mediumArray, "Střední pole");
 
             //WriteArrayToConsole(largeArray, "Velké pole");
             //SortArray(largeArray, "Velké pole");
