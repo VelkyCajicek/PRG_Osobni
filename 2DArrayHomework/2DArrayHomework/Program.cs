@@ -29,7 +29,7 @@ namespace _2DArrayHomework
                     Ary1 = FillArray(Ary1); Ary2 = FillArray(Ary2); Ary3 = FillArray(Ary3); Ary4 = FillArray(Ary4);
                     Console.WriteLine("All arrays created");
                 }
-                if (Regex.IsMatch(input, @"^ary[1-4]\[[0-9]+,[0-9]+\]\[[0-9]+,[0-9]+\]$") == true) //ary1[1,0][4,2]
+                if (Regex.IsMatch(input, @"^ary[1-4]\[[0-9]+,[0-9]+\]\[[0-9]+,[0-9]+\]$")) //ary1[1,0][4,2]
                 {
                     string inputCheck = input.Substring(3, 1);
                     switch (inputCheck)
@@ -89,101 +89,24 @@ namespace _2DArrayHomework
                         case 4: Ary4 = Array0; Console.WriteLine("Array saved to Ary4"); break;
                     }
                 }
-                if (Regex.IsMatch(input, @"^switchrowary[0-9]+\[[0-9]+,[0-9]+\]$"))
-                {
-                    input = Regex.Replace(input, "[^0-9]", "");
-                    int ArrayChooser = int.Parse(input[0].ToString());
-                    int nRowSwap = int.Parse(input[1].ToString());
-                    int mRowSwap = int.Parse(input[2].ToString());
-                    switch (ArrayChooser)
-                    {
-                        case 1: SwitchRow(Ary1, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                        case 2: SwitchRow(Ary2, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                        case 3: SwitchRow(Ary3, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                        case 4: SwitchRow(Ary4, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                    }
-                }
-                if (Regex.IsMatch(input, @"^switchcolary[0-9]+\[[0-9]+,[0-9]+\]$"))
-                {
-                    input = Regex.Replace(input, "[^0-9]", "");
-                    int ArrayChooser = int.Parse(input[0].ToString());
-                    int nRowSwap = int.Parse(input[1].ToString());
-                    int mRowSwap = int.Parse(input[2].ToString());
-                    switch (ArrayChooser)
-                    {
-                        case 1: SwitchColoumn(Ary1, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                        case 2: SwitchColoumn(Ary2, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                        case 3: SwitchColoumn(Ary3, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                        case 4: SwitchColoumn(Ary4, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
-                    }
-                }
+                if (Regex.IsMatch(input, @"^switchrowary[0-9]+\[[0-9]+,[0-9]+\]$")) { SwitchingRow(input, Ary1, Ary2, Ary3, Ary4); }
+                if (Regex.IsMatch(input, @"^switchcolary[0-9]+\[[0-9]+,[0-9]+\]$")) { SwitchingColumn(input, Ary1, Ary2, Ary3, Ary4); }
                 if (input.Contains("+") || input.Contains("-") || input.Contains("*"))
                 {
                     if (input.Contains("+"))
                     {
                         int position = input.IndexOf("+");
-                        int[,] firstArray = new int[0, 0]; int[,] secondArray = new int[0, 0];
-                        string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
-                        string secondPart = input.Substring(position + 1, input.Length - position - 1);
-                        switch (firstPart)
-                        {
-                            case "ary1": firstArray = Ary1; break;
-                            case "ary2": firstArray = Ary2; break;
-                            case "ary3": firstArray = Ary3; break;
-                            case "ary4": firstArray = Ary4; break;
-                        }
-                        switch (secondPart)
-                        {
-                            case "ary1": secondArray = Ary1; break;
-                            case "ary2": secondArray = Ary2; break;
-                            case "ary3": secondArray = Ary3; break;
-                            case "ary4": secondArray = Ary4; break;
-                        }
-                        Ary4 = ArrayAddition(firstArray, secondArray);
+                        Ary4 = ArrayAddition(AddSubMult1(input, position, Ary1, Ary2, Ary3, Ary4), AddSubMult2(input, position, Ary1, Ary2, Ary3, Ary4));
                     }
                     if (input.Contains("-"))
                     {
                         int position = input.IndexOf("-");
-                        int[,] firstArray = new int[0, 0]; int[,] secondArray = new int[0, 0];
-                        string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
-                        string secondPart = input.Substring(position + 1, input.Length - position - 1);
-                        switch (firstPart)
-                        {
-                            case "ary1": firstArray = Ary1; break;
-                            case "ary2": firstArray = Ary2; break;
-                            case "ary3": firstArray = Ary3; break;
-                            case "ary4": firstArray = Ary4; break;
-                        }
-                        switch (secondPart)
-                        {
-                            case "ary1": secondArray = Ary1; break;
-                            case "ary2": secondArray = Ary2; break;
-                            case "ary3": secondArray = Ary3; break;
-                            case "ary4": secondArray = Ary4; break;
-                        }
-                        Ary4 = ArraySubtraction(firstArray, secondArray);
+                        Ary4 = ArraySubtraction(AddSubMult1(input, position, Ary1, Ary2, Ary3, Ary4), AddSubMult2(input, position, Ary1, Ary2, Ary3, Ary4));
                     }
                     if (input.Contains("*"))
                     {
                         int position = input.IndexOf("*");
-                        int[,] firstArray = new int[0, 0]; int[,] secondArray = new int[0, 0];
-                        string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
-                        string secondPart = input.Substring(position + 1, input.Length - position - 1);
-                        switch (firstPart)
-                        {
-                            case "ary1": firstArray = Ary1; break;
-                            case "ary2": firstArray = Ary2; break;
-                            case "ary3": firstArray = Ary3; break;
-                            case "ary4": firstArray = Ary4; break;
-                        }
-                        switch (secondPart)
-                        {
-                            case "ary1": secondArray = Ary1; break;
-                            case "ary2": secondArray = Ary2; break;
-                            case "ary3": secondArray = Ary3; break;
-                            case "ary4": secondArray = Ary4; break;
-                        }
-                        Ary4 = ArrayMultiplication(firstArray, secondArray);
+                        Ary4 = ArrayMultiplication(AddSubMult1(input, position, Ary1, Ary2, Ary3, Ary4), AddSubMult2(input, position, Ary1, Ary2, Ary3, Ary4));
                     }
                     Console.WriteLine("Result saved to Ary4");
                 }
@@ -273,7 +196,7 @@ namespace _2DArrayHomework
             }
             return array;
         }
-        static int[,] SwitchColoumn(int[,] array, int nRowSwap, int mRowSwap)
+        static int[,] SwitchColumn(int[,] array, int nRowSwap, int mRowSwap)
         {
             for (int i = 0; i < array.GetLength(0); i++)
             {
@@ -302,44 +225,19 @@ namespace _2DArrayHomework
         {
             Console.BackgroundColor = ConsoleColor.White; Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("Command list:\n");
-            Console.WriteLine("Creating array:                                                    Displaying arrays:                                    \n");
+            Console.WriteLine("Creating array:                                                    Displaying arrays:                                  \n");
             Console.ResetColor();
             Console.WriteLine("cfa - Creates all arrays and fill them randomly                    DisplayAll - Show all arrays");
-            Console.WriteLine("Create[a x b] - Prepares a array with parameters a and b           DisplayAry(1-4) - Displays specified array            \n");
+            Console.WriteLine("Create[a x b] - Prepares a array with parameters a and b           DisplayAry1-4 - Displays specified array            \n");
             Console.BackgroundColor = ConsoleColor.White; Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine("Array manipulation:                                                Math:                                                 \n");
+            Console.WriteLine("Array manipulation:                                                Math:                                               \n");
             Console.ResetColor();
             Console.WriteLine("Ary(1-4) [x, y][m, n] - Switch position of number in array         Operations (+,-,*) between two arrays E.g. Ary1 * Ary2");
-            Console.WriteLine("Trn[Ary(1-4)] - Transposes the array along the main diagonal       Operations (+,-,*) between nums and array E.g. Ary1 + 1");
+            Console.WriteLine("Trn[Ary1-4] - Transposes the array along the main diagonal       Operations (+,-,*) between nums and array E.g. Ary1 + 1");
             Console.WriteLine("ClearAll - Clears all arrays");
-            Console.WriteLine("SwitchColAry(1-4)[n,m] - Swaps coloumn n with m in specified array");
-            Console.WriteLine("SwitchRowAry(1-4)[n,m] - Swaps row n with m in specified array");
+            Console.WriteLine("SwitchColAry1-4[n,m] - Swaps coloumn n with m in specified array");
+            Console.WriteLine("SwitchRowAry1-4[n,m] - Swaps row n with m in specified array");
             Console.WriteLine();
-        }
-        static void Calculation(int[,] array, int z, string num)
-        {
-            for (int i = 0; i < array.GetLength(0); i++)
-            {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    switch (z)
-                    {
-                        case 0:
-                            int s = array[i, j];
-                            array[i, j] = s + int.Parse(num);
-                            break;
-                        case 1:
-                            s = array[i, j];
-                            array[i, j] = s - int.Parse(num);
-                            break;
-                        case 2:
-                            s = array[i, j];
-                            array[i, j] = s * int.Parse(num);
-                            break;
-
-                    }
-                }
-            }
         }
         static int[,] ArrayMultiplication(int[,] array1, int[,] array2)
         {
@@ -381,6 +279,60 @@ namespace _2DArrayHomework
                 }
             }
             return matrixResult;
+        }
+        static void SwitchingColumn(string input, int[,] Ary1, int[,] Ary2, int[,] Ary3, int[,] Ary4)
+        {
+            input = Regex.Replace(input, "[^0-9]", "");
+            int ArrayChooser = int.Parse(input[0].ToString());
+            int nRowSwap = int.Parse(input[1].ToString());
+            int mRowSwap = int.Parse(input[2].ToString());
+            switch (ArrayChooser)
+            {
+                case 1: SwitchColumn(Ary1, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                case 2: SwitchColumn(Ary2, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                case 3: SwitchColumn(Ary3, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                case 4: SwitchColumn(Ary4, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+            }
+        }
+        static void SwitchingRow(string input, int[,] Ary1, int[,] Ary2, int[,] Ary3, int[,] Ary4)
+        {
+            input = Regex.Replace(input, "[^0-9]", "");
+            int ArrayChooser = int.Parse(input[0].ToString());
+            int nRowSwap = int.Parse(input[1].ToString());
+            int mRowSwap = int.Parse(input[2].ToString());
+            switch (ArrayChooser)
+            {
+                case 1: SwitchRow(Ary1, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                case 2: SwitchRow(Ary2, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                case 3: SwitchRow(Ary3, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+                case 4: SwitchRow(Ary4, nRowSwap, mRowSwap); Console.WriteLine("Done"); break;
+            }
+        }
+        static int[,] AddSubMult1(string input, int position, int[,] Ary1, int[,] Ary2, int[,] Ary3, int[,] Ary4)
+        {
+            int[,] firstArray = new int[0, 0];
+            string firstPart = input.Substring(0, input.Length - position - 1); // Ary1 + Ary2
+            switch (firstPart)
+            {
+                case "ary1": firstArray = Ary1; break;
+                case "ary2": firstArray = Ary2; break;
+                case "ary3": firstArray = Ary3; break;
+                case "ary4": firstArray = Ary4; break;
+            }
+            return firstArray;
+        }
+        static int[,] AddSubMult2(string input, int position, int[,] Ary1, int[,] Ary2, int[,] Ary3, int[,] Ary4)
+        {
+            int[,] secondArray = new int[0, 0];
+            string secondPart = input.Substring(position + 1, input.Length - position - 1);
+            switch (secondPart)
+            {
+                case "ary1": secondArray = Ary1; break;
+                case "ary2": secondArray = Ary2; break;
+                case "ary3": secondArray = Ary3; break;
+                case "ary4": secondArray = Ary4; break;
+            }
+            return secondArray;
         }
     }
 }
