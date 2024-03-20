@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48526B12-9E2C-4875-A207-9A3CF14204C7}</ProjectGuid>
+    <ProjectGuid>{F39C204A-F17C-4F63-99E5-BC7C85BCFAFE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>FirstFormsApp</RootNamespace>
-    <AssemblyName>FirstFormsApp</AssemblyName>
+    <RootNamespace>PaintApp</RootNamespace>
+    <AssemblyName>PaintApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

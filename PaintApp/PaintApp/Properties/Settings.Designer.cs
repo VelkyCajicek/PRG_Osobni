@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FirstFormsApp.Properties
+namespace PaintApp.Properties
 {
 
 
