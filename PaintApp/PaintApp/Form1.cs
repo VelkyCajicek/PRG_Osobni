@@ -35,13 +35,13 @@ namespace PaintApp
             }
             this.Cursor = Cursors.WaitCursor;
             panel1.Cursor = new Cursor("Pencil.cur");
-            SizeLabel.Text = $" □ {panel1.Width} x {panel1.Height} px ";
+            
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
             float penWidth = float.Parse(comboBox1.Text)/2;
-            PositionLabel.Text = $"➣ {e.X} x {e.Y} px";
+            label2.Text = $"➣ {e.X} x {e.Y} px";
             if (moving && x != 1 && y != 1 && comboBox2.SelectedIndex == 0)
             {
                 g.DrawLine(pencil, new Point(x, y), e.Location);
@@ -108,6 +108,13 @@ namespace PaintApp
         private void ClearButton_Click(object sender, EventArgs e)
         {
             panel1.Refresh();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            int formHeight = this.Height;
+            int formWidth = this.Width;
+            label1.Text = $" □ {formWidth} x {formHeight} px ";
         }
     }
 }
