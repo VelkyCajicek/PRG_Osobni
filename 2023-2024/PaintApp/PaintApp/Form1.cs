@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PaintApp
 {
@@ -17,26 +18,47 @@ namespace PaintApp
         int x = -1;
         int y = -1;
         bool moving = false;
-        Pen pen;
+        Pen pencil;
+        SolidBrush pen;
+        SolidBrush eraser;
         public Form1()
         {
             InitializeComponent();
             g = panel1.CreateGraphics();
             float penWidth = float.Parse(comboBox1.Text);
-            pen = new Pen(Color.Black, penWidth);
-            for (int i = 1; i < 12; i+=1)
+            pencil = new Pen(Color.Black, penWidth);
+            eraser = new SolidBrush(Color.White);
+            pen = new SolidBrush(Color.Black);
+            for (int i = 2; i < 76; i += 4)
             {
                 comboBox1.Items.Add(i);
             }
+            this.Cursor = Cursors.WaitCursor;
+            panel1.Cursor = new Cursor("Pencil.cur");
+            
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
-            if(moving && x != 1 && y != 1)
+            float penWidth = float.Parse(comboBox1.Text)/2;
+            label2.Text = $"➣ {e.X} x {e.Y} px";
+            if (moving && x != 1 && y != 1 && comboBox2.SelectedIndex == 0)
             {
-                g.DrawLine(pen, new Point(x, y), e.Location);
+                g.DrawLine(pencil, new Point(x, y), e.Location);
                 x=e.X; 
                 y=e.Y;
+            }
+            if (moving && x != 1 && y != 1 && comboBox2.SelectedIndex == 1)
+            {
+                g.FillEllipse(eraser, e.X - penWidth, e.Y - penWidth, penWidth, penWidth);
+                x = e.X;
+                y = e.Y;
+            }
+            if (moving && x != 1 && y != 1 && comboBox2.SelectedIndex == 2)
+            {
+                g.FillEllipse(pen, e.X - penWidth, e.Y - penWidth, penWidth, penWidth);
+                x = e.X;
+                y = e.Y;
             }
         }
 
@@ -62,6 +84,7 @@ namespace PaintApp
                 button2.BackColor = colorDialog1.Color;
                 if(comboBox2.SelectedIndex != 1)
                 {
+                    pencil.Color = colorDialog1.Color;
                     pen.Color = colorDialog1.Color;
                 }
             }
@@ -69,19 +92,29 @@ namespace PaintApp
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pen.Width = float.Parse(comboBox1.Text);
+            pencil.Width = float.Parse(comboBox1.Text);
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedIndex == 0)
+            switch (comboBox2.SelectedIndex)
             {
-                pen.Color = colorDialog1.Color;
+                case 0: panel1.Cursor = new Cursor("Pencil.cur"); break;
+                case 1: panel1.Cursor = new Cursor("Eraser.cur"); break;
+                case 2: panel1.Cursor = new Cursor("Pen.cur"); break;
             }
-            if (comboBox2.SelectedIndex == 1)
-            {
-                pen.Color = Color.White;
-            }
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            panel1.Refresh();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            int formHeight = this.Height;
+            int formWidth = this.Width;
+            label1.Text = $" □ {formWidth} x {formHeight} px ";
         }
     }
 }
