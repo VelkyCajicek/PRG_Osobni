@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,11 +14,31 @@ namespace CalculatorV2
     {
         static void Main(string[] args)
         {
-            string[] operators = { "+", "-", "*", "/" };
+            string[] operators = { "+", "-", "*", "/", "^" };
+            string[] functions = { "sin", "cos", "tg", "cotg" };
+            Dictionary<string, int> numberBases = new Dictionary<string, int>() // Converting between bases
+            {
+                { "binary", 2 },
+                { "octal", 8 },
+                { "decimal", 10 },
+                { "hexadecimal", 16 }
+            };
+            // Additional features
+            float ans = 0; // Reusing the value from previous calculation
+            int nBIndex = 10;
+
             while (true)
             {
                 Console.Write("Equation:");
-                string input = Console.ReadLine().Replace(" ", ""); // Simply removes whitespaces
+                string input = Console.ReadLine().Replace(" ", "").ToLower().Replace("ans", ans.ToString()); // Simply removes whitespaces
+
+                foreach (KeyValuePair<string, int> nB in numberBases) // Changes number base
+                {
+                    if(nB.Key == input)
+                    {
+                        nBIndex = nB.Value;
+                    }
+                }
 
                 List<char> usedOperators = new List<char>();
                 List<float> usedValues = new List<float>();
@@ -33,24 +54,29 @@ namespace CalculatorV2
                     parenthesisLocations = ParenthesisMatcher(usedValuesString);
 
                     // Find smallest equation in parenthesis list
-                    int parenthesisLength = 5000;
+                    int parenthesisLength = 5000; // Program tries to find lowest value so initial value is just set to a random high value
                     int parenthesisIndex = 0;
-                    for (int i = 0; i < parenthesisLocations.Count(); i++)
+                    try
                     {
-                        if (Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) < parenthesisLength)
+                        for (int i = 0; i < parenthesisLocations.Count(); i++)
                         {
-                            parenthesisIndex = i;
-                            parenthesisLength = Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]);
+                            if (Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) < parenthesisLength)
+                            {
+                                parenthesisIndex = i;
+                                parenthesisLength = Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]);
+                            }
                         }
                     }
-
-                    //DisplayList(parenthesisLocations[parenthesisIndex]);
-                    //Console.WriteLine(parenthesisLength);
+                    catch (Exception)
+                    {
+                        input = input.Replace("(", "").Replace(")", "");
+                        break;
+                    }
 
                     List<float> currentValues = usedValues.GetRange(parenthesisLocations[parenthesisIndex][0], Math.Abs(parenthesisLocations[parenthesisIndex][0] - parenthesisLocations[parenthesisIndex][1]) + 1);
                     List<char> currentOperators = usedOperators.GetRange(parenthesisLocations[parenthesisIndex][0], Math.Abs(parenthesisLocations[parenthesisIndex][0] - parenthesisLocations[parenthesisIndex][1]));
                     string sub = input.Substring(parenthesisLocations[parenthesisIndex][0] * 2, 3 + 2 * parenthesisLength);
-                    //Console.WriteLine(sub);
+
                     if (parenthesisLocations[parenthesisIndex][0] == 0)
                     {
                         input = input.Replace(input.Substring(parenthesisLocations[parenthesisIndex][0] * 2, 3 + 2 * parenthesisLength), Calculation(currentOperators, currentValues).ToString());
@@ -59,7 +85,6 @@ namespace CalculatorV2
                     {
                         try
                         {
-                            //Console.WriteLine(input);
                             input = input.Replace(input.Substring(parenthesisLocations[parenthesisIndex][0] * 2 + 1, 3 + 2 * parenthesisLength), Calculation(currentOperators, currentValues).ToString());
                         }
                         catch (ArgumentOutOfRangeException)
@@ -71,16 +96,36 @@ namespace CalculatorV2
                     }
                     Console.WriteLine(input);
                 }
-                usedOperators = Regex.Replace(input, "[a-zA-Z0-9()]", "").ToCharArray().ToList(); // Extracts all operators from string
-                usedValues = input.Replace("(", "").Replace(")", "").Split(operators, StringSplitOptions.RemoveEmptyEntries).Select(float.Parse).ToList();
-                float result = Calculation(usedOperators, usedValues);
-                Console.WriteLine(result);
+                try // Throws error if input is not in correct format
+                {
+                    usedOperators = Regex.Replace(input, "[a-zA-Z0-9()]", "").ToCharArray().ToList(); // Extracts all operators from string
+                    usedValues = input.Replace("(", "").Replace(")", "").Split(operators, StringSplitOptions.RemoveEmptyEntries).Select(float.Parse).ToList();
+                    float result = Calculation(usedOperators, usedValues);
+                    ans = result; // Adds value to ans variable
+                    if(nBIndex != 10) // Doesnt work yet
+                    {
+                        Console.WriteLine(Convert.ToString(Convert.ToInt32(result), nBIndex));
+                    }
+                    else
+                    {
+                        Console.WriteLine(result.ToString());
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Input is not in correct format");
+                }
             }
             
             Console.ReadKey();
         }
 
-        static void DisplayList(dynamic array)
+        static void CalculationWithParenthesis() 
+        {
+            
+        }
+
+        static void DisplayList(dynamic array) // To visualize states of lists easier
         {
             foreach (var item in array)
             {
@@ -89,7 +134,7 @@ namespace CalculatorV2
             Console.WriteLine();
         }
 
-        static void DisplayEquation(List<float> values, List<char> operators)
+        static void DisplayEquation(List<float> values, List<char> operators) // To visualize the state of the equation
         {
             for (int i = 0; i < operators.Count(); i++)
             {
@@ -99,9 +144,17 @@ namespace CalculatorV2
             Console.WriteLine();
         }
 
-        static float Calculation(List<char> usedOperators, List<float> usedValues)
+        static float Calculation(List<char> usedOperators, List<float> usedValues) // Calculates the equation without parenthasis
         {
-            while (usedOperators.Contains('*')|| usedOperators.Contains('/')) // Ensures that BIDMAS rules are followed
+            while (usedOperators.Contains('^')) // Ensures that BIDMAS rules are followed
+            {
+                int index = usedOperators.IndexOf('^');
+                usedValues[index] = (float)Math.Pow(usedValues[index], usedValues[index + 1]);
+                usedValues.RemoveAt(index + 1);
+                usedOperators.RemoveAt(index);
+            }
+            
+            while (usedOperators.Contains('*') || usedOperators.Contains('/')) 
             {
                 if (usedOperators.IndexOf('*') != -1)
                 { // These blocks of code find the first index of operator and then removes both values and operator (which were used) from list
