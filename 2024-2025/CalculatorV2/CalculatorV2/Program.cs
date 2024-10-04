@@ -13,50 +13,70 @@ namespace CalculatorV2
     {
         static void Main(string[] args)
         {
+            string[] operators = { "+", "-", "*", "/" };
             while (true)
             {
                 Console.Write("Equation:");
                 string input = Console.ReadLine().Replace(" ", ""); // Simply removes whitespaces
 
-                string[] operators = { "+", "-", "*", "/" };
+                List<char> usedOperators = new List<char>();
+                List<float> usedValues = new List<float>();
 
-                List<char> usedOperators = Regex.Replace(input, "[a-zA-Z0-9()]", "").ToCharArray().ToList(); // Extracts all operators from string
-                List<float> usedValues = input.Replace("(", "").Replace(")", "").Split(operators, StringSplitOptions.RemoveEmptyEntries).Select(float.Parse).ToList();
-
-                if (input.Contains("(") || input.Contains(")"))
+                while (input.Contains('(') || input.Contains(')'))
                 {
-                    List<List<int>> parenthesisLocations = new List<List<int>>(); // There could be a array here (I think)
+                    usedOperators = Regex.Replace(input, "[a-zA-Z0-9()]", "").ToCharArray().ToList(); // Extracts all operators from string
+                    usedValues = input.Replace("(", "").Replace(")", "").Split(operators, StringSplitOptions.RemoveEmptyEntries).Select(float.Parse).ToList();
+
                     List<string> usedValuesString = input.Split(operators, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    try
+                    List<List<int>> parenthesisLocations = new List<List<int>>(); // There could be a array here (I think)
+
+                    parenthesisLocations = ParenthesisMatcher(usedValuesString);
+
+                    // Find smallest equation in parenthesis list
+                    int parenthesisLength = 5000;
+                    int parenthesisIndex = 0;
+                    for (int i = 0; i < parenthesisLocations.Count(); i++)
                     {
-                        parenthesisLocations = ParenthesisMatcher(usedValuesString);
-                        for (int i = 0; i < parenthesisLocations.Count(); i++)
+                        if (Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) < parenthesisLength)
                         {
-                            try
-                            {
-                                List<float> currentValues = usedValues.GetRange(parenthesisLocations[i][0], Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) + 1);
-                                List<char> currentOperators = usedOperators.GetRange(parenthesisLocations[i][0], Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]));
-                                usedValues[parenthesisLocations[i][0]] = Calculation(currentOperators, currentValues);
-                            }
-                            catch (ArgumentException)
-                            {
-                                List<float> currentValues = usedValues.GetRange(parenthesisLocations[i][0] - 1, Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) + 1);
-                                List<char> currentOperators = usedOperators.GetRange(parenthesisLocations[i][0] - 1, Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]));
-                                usedValues[parenthesisLocations[i][0] - 1] = Calculation(currentOperators, currentValues);
-                            }
-                            usedValues.RemoveAt(i + 1);
-                            usedOperators.RemoveAt(i);
-                            DisplayEquation(usedValues, usedOperators);
+                            parenthesisIndex = i;
+                            parenthesisLength = Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]);
                         }
                     }
-                    catch (ArgumentOutOfRangeException) // This will thrown if there is a list with only one element 
+
+                    //DisplayList(parenthesisLocations[parenthesisIndex]);
+                    //Console.WriteLine(parenthesisLength);
+
+                    List<float> currentValues = usedValues.GetRange(parenthesisLocations[parenthesisIndex][0], Math.Abs(parenthesisLocations[parenthesisIndex][0] - parenthesisLocations[parenthesisIndex][1]) + 1);
+                    List<char> currentOperators = usedOperators.GetRange(parenthesisLocations[parenthesisIndex][0], Math.Abs(parenthesisLocations[parenthesisIndex][0] - parenthesisLocations[parenthesisIndex][1]));
+                    string sub = input.Substring(parenthesisLocations[parenthesisIndex][0] * 2, 3 + 2 * parenthesisLength);
+                    //Console.WriteLine(sub);
+                    if (parenthesisLocations[parenthesisIndex][0] == 0)
                     {
-                        Console.WriteLine("Missing parenthesis");
+                        input = input.Replace(input.Substring(parenthesisLocations[parenthesisIndex][0] * 2, 3 + 2 * parenthesisLength), Calculation(currentOperators, currentValues).ToString());
                     }
+                    else
+                    {
+                        try
+                        {
+                            //Console.WriteLine(input);
+                            input = input.Replace(input.Substring(parenthesisLocations[parenthesisIndex][0] * 2 + 1, 3 + 2 * parenthesisLength), Calculation(currentOperators, currentValues).ToString());
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            input = input.Replace(input.Substring(parenthesisLocations[parenthesisIndex][0] * 2 + 1, 3 + 2 * parenthesisLength - 1), Calculation(currentOperators, currentValues).ToString());
+                            input = input.Replace("(", "").Replace(")", "");
+                            break;
+                        }
+                    }
+                    Console.WriteLine(input);
                 }
+                usedOperators = Regex.Replace(input, "[a-zA-Z0-9()]", "").ToCharArray().ToList(); // Extracts all operators from string
+                usedValues = input.Replace("(", "").Replace(")", "").Split(operators, StringSplitOptions.RemoveEmptyEntries).Select(float.Parse).ToList();
                 float result = Calculation(usedOperators, usedValues);
                 Console.WriteLine(result);
             }
+            
             Console.ReadKey();
         }
 
@@ -121,6 +141,7 @@ namespace CalculatorV2
         static List<List<int>> ParenthesisMatcher(List<string> usedValues)
         {
             List<List<int>> parenthesisLocations = new List<List<int>>(); // There could be a array here (I think)
+            List<float> test = new List<float>();
             int index = 0; // Index to determine which is the next list that requires a closed parenthesis
             for (int i = 0; i < usedValues.Count(); i++)
             {
@@ -159,26 +180,6 @@ namespace CalculatorV2
                     }
                 }
             }
-            /*int highestPriority = 1000; // Set really high
-            for (int i = 0; i < parenthesisLocations.Count(); i++)
-            {
-                if (Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) < highestPriority)
-                {
-                    highestPriority = Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]);
-                }
-            }
-
-            List<List<int>> temp = new List<List<int>>();
-
-            for (int i = 0; i < parenthesisLocations.Count(); i++)
-            {
-                if (Math.Abs(parenthesisLocations[i][0] - parenthesisLocations[i][1]) == highestPriority)
-                {
-                    temp.Add(parenthesisLocations[i]);
-                }
-            }
-
-            return temp;*/
             return parenthesisLocations;
         }
     }
