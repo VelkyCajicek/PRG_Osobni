@@ -26,10 +26,11 @@ namespace CalculatorV2
             // Additional features
             float ans = 0; // Reusing the value from previous calculation
             int nBIndex = 10;
-
+            string nBName = "decimal";
+            Help();
             while (true)
             {
-                Console.Write("Equation:");
+                Console.Write($"({nBName}) Equation:");
                 string input = Console.ReadLine().Replace(" ", "").ToLower().Replace("ans", ans.ToString()); // Simply removes whitespaces
 
                 foreach (KeyValuePair<string, int> nB in numberBases) // Changes number base
@@ -37,6 +38,9 @@ namespace CalculatorV2
                     if(nB.Key == input)
                     {
                         nBIndex = nB.Value;
+                        nBName = nB.Key;
+                        Console.Write($"({nBName}) Equation:");
+                        input = Console.ReadLine().Replace(" ", "").ToLower().Replace("ans", ans.ToString());
                     }
                 }
 
@@ -116,13 +120,16 @@ namespace CalculatorV2
                     Console.WriteLine("Input is not in correct format");
                 }
             }
-            
             Console.ReadKey();
         }
 
-        static void CalculationWithParenthesis() 
+        static void Help() 
         {
-            
+            Console.WriteLine(" - Allowed operations : +, -, *, ^");
+            Console.WriteLine(" - Calculator follows BIDMAS rules of order and allows for parenthesis");
+            Console.WriteLine(" - In order to change number base just write the name of it (e.g. binary, octal, decimal, hexadecimal)");
+            Console.WriteLine(" - Right now it just writes the result in the given number base, so user input should be decimal");
+            Console.WriteLine();
         }
 
         static void DisplayList(dynamic array) // To visualize states of lists easier
