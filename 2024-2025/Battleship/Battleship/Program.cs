@@ -36,7 +36,7 @@ namespace Battleship
             enemy_array = Fill_Array_Randomly(enemy_array);
             // Ask user whether he wants to have automatic ship placement
             if (Verify_User_Input(question: "Automatically generate your ship placement (y/n):") == "y") player_array = Fill_Array_Randomly(player_array);
-            else player_array = Manually_Fill_Array(player_array);
+            else player_array = Manually_Fill_Array(player_array, letter_array);
             // Ask user whether he wants the game to run automatically
             if (Verify_User_Input(question: "Automatically play out this game (y/n):") == "y") auto_play = true;
             // Main Game
@@ -239,8 +239,42 @@ namespace Battleship
 
             return ship_array;
         }
-        static char[,] Manually_Fill_Array(char[,] ship_array)
+        static char[,] Manually_Fill_Array(char[,] ship_array, char[] letter_array)
         {
+            string user_input;
+            int start_x;
+            int start_y;
+
+            Console.WriteLine("You will first select a start point and then whether the given ship will be place horizontally or vertically");
+            Console.WriteLine("The ships will be placed in the following order: ");
+            Console.WriteLine("AC (1x5), Battleship (1x4), Cruiser(1x3), Sub(1x3), Destroyer(1x2)");
+            Console.WriteLine("Could you write the start coordinate? e.g. C3");
+            while (true)
+            {
+                while (true) // Verify coordinate
+                {
+                    user_input = Console.ReadLine().ToUpper();
+                    if (Regex.IsMatch(user_input, "[A-Za-z][0-9]+"))
+                    {
+                        if (letter_array.Contains(user_input[0]))
+                        {
+                            start_x = Array.IndexOf(letter_array, user_input[0]);
+                            start_y = int.Parse(user_input.Substring(1, user_input.Length - 1)) - 1;
+                            if (ship_array[start_y, start_x] == 'W') break;
+                            else Console.WriteLine("Already a ship here");
+                        }
+                        else Console.WriteLine($"{user_input} is not a valid coordinate");
+                    }
+                    else Console.WriteLine("Input in incorrect format");
+                }
+                while (true)
+                {
+                    user_input = Console.ReadLine().ToLower();
+                    if (user_input == "h" || user_input == "v") break;
+                    else Console.WriteLine("Invalid input");
+                }
+                if()
+            }
             return new char[,] { };
         }
     }
