@@ -323,6 +323,7 @@ namespace Battleship
                         DisplayArray(ship_array, letter_array);
                         break;
                     }
+                    DisplayArray(ship_array, letter_array);
                 } 
             }
             return new char[,] { };
