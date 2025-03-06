@@ -6,23 +6,26 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 
 namespace HomeWork3
 {
     internal class Program
     {
+        static void Setup()
+        {
+            var network = new Network("Home")
+            {
+                new Network
+            }
+        }
+        static void Notes()
+        {
+            // Nuke.exe which will hack the program
+            // https://stackoverflow.com/questions/9860207/build-a-simple-high-performance-tree-data-structure-in-c-sharp
+        }
         static void Main(string[] args)
         {
-            var codeToEval = @"
-                int test = 0;
-                var count = test + 15;
-                count++;
-                return count;";
-
-            var options = ScriptOptions.Default;
-            var result = CSharpScript.EvaluateAsync(codeToEval, options);
+            
         }
     }
 }
