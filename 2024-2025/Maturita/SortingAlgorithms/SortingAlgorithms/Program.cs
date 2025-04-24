@@ -12,157 +12,120 @@ namespace SortingAlgorithms
     {
         static void Main(string[] args)
         {
-            // Line to change the language
-            // System.Globalization.CultureInfo.DefaultThreadCurrentUICulture=System.Globalization.CultureInfo.GetCultureInfo("en-US");
-            int arraySize = 10;
-            int[] array = new int[arraySize];
-            FillArray(array);
-            DisplayArray(array);
-            QuickSort(array, 0, arraySize - 1);
-            DisplayArray(array);
+            int n = 10;
+            int[] arr = new int[n];
+            FillArray(arr, n);
+            Console.Write("Unsorted array: ");
+            DisplayArray(arr, n);
+            // Create clones of main array
+            int[] arr1 = (int[])arr.Clone();
+            int[] arr2 = (int[])arr.Clone();
+            int[] arr3 = (int[])arr.Clone();
+            int[] arr4 = (int[])arr.Clone();
+            // O(n^2) algorithms
+            BubbleSort(arr1, n);
+            SelectionSort(arr2, n);
+            InsertionSort(arr3, n);
+            // Quicksort
+            QuickSort(arr4, 0, n - 1);
+            Console.Write("Quick sort: ");
+            DisplayArray(arr4, n);
+
             Console.ReadKey();
         }
-        static void FillArray(int[] anyArray)
+        static void FillArray(int[] arr, int n)
         {
             Random rnd = new Random();
-            for (int i = 0; i < anyArray.Length; i++)
+            for (int i = 0; i < n; i++)
             {
-                anyArray[i] = rnd.Next(0, 100);
+                arr[i] = rnd.Next(0, 100);
             }
         }
-
-        static void DisplayArray(int[] anyArray)
+        static void DisplayArray(int[] arr, int n)
         {
-            for (int i = 0; i < anyArray.Length; i++)
+            for (int i = 0; i < n; i++)
             {
-                Console.Write($"{anyArray[i]}, ");
+                Console.Write(i < n - 1 ? $"{arr[i]}, " : $"{arr[i]}\n");
             }
-            Console.WriteLine();
         }
-
-        static int[] SelectionSort(int[] anyArray) // Time complexity O(n^2)
+        static void Swap(ref int a, ref int b)
         {
-            // Main idea - Starts with first element, checks every one after that for a minimum, swaps accordingly
-            int n = anyArray.Length;
-
-            int iMin;
-            int temp;
-
-            for (int i = 0; i < n - 1; i++)
-            {
-                iMin = i; // Assumes the minimum is the first element
-                for (int j = i + 1; j < n; j++) // Tests against all elements after i to find the smallest
-                {
-                    if (anyArray[j] < anyArray[iMin]) // If this element is less, then it is the new minimum
-                    {
-                        iMin = j;
-                    }
-                }
-                // Swaps the elements
-                temp = anyArray[i];
-                anyArray[i] = anyArray[iMin];
-                anyArray[iMin] = temp;
-            }
-            return anyArray;
+            int temp = a;
+            a = b;
+            b = temp;
         }
-        static int[] BubbleSortWorse(int[] anyArray) // Time complexity O(n^2) 
+        static void BubbleSort(int[] arr, int n)
         {
-            int n = anyArray.Length;
-
-            for (int i = 0; i < n - 1; i++)
-            {
-                for (int j = 0; j < n - i - 1; j++)
-                {
-                    if (anyArray[j] > anyArray[j + 1])
-                    {
-                        int temp = anyArray[j - 1];
-                        anyArray[j - 1] = anyArray[j];
-                        anyArray[j] = temp;
-                    }
-                }
-            }
-
-            return anyArray; // Doesn't account for the list already potentially being sorted
-        }
-
-        static int[] BubbleSortBetter(int[] anyArray) // Time complexity O(n^2)
-        {
-            int n = anyArray.Length;
-
+            Console.Write("Bubble sort: ");
             for (int i = 0; i < n - 1; i++)
             {
                 bool swapped = false;
                 for (int j = 0; j < n - i - 1; j++)
                 {
-                    if (anyArray[j] > anyArray[j + 1])
+                    if (arr[j] > arr[j + 1])
                     {
-                        int temp = anyArray[j - 1];
-                        anyArray[j - 1] = anyArray[j];
-                        anyArray[j] = temp;
+                        Swap(ref arr[j], ref arr[j + 1]);
+                        swapped = true;
                     }
                 }
-                if (!swapped) // In case the array is already sorted then this stops the algorithm from checking
-                {
-                    break;
-                }
+                if (!swapped) break;
             }
-
-            return anyArray;
+            DisplayArray(arr, n);
         }
-
-        static int[] InsertionSort(int[] anyArray) // Time complexity O(n^2)
+        static void SelectionSort(int[] arr, int n)
         {
-            int n = anyArray.Length;
-
-            for (int i = 0; i < n - 1; i++)
+            Console.Write("Selection sort: ");
+            for (int i = 0; i < n; i++)
             {
-                for (int j = i + 1; j > 0; j--)
+                int iMin = i;
+                for (int j = i; j < n; j++)
                 {
-                    // Swap if the element at j - 1 position is greater than the element at j position
-                    if (anyArray[j - 1] > anyArray[j])
-                    {
-                        int temp = anyArray[j - 1];
-                        anyArray[j - 1] = anyArray[j];
-                        anyArray[j] = temp;
-                    }
+                    if (arr[j] < arr[iMin]) iMin = j;
                 }
+                Swap(ref arr[i], ref arr[iMin]);
             }
-            return anyArray; 
+            DisplayArray(arr, n);
         }
-
-        public static void QuickSort(int[] arr, int left, int right)
+        static void InsertionSort(int[] arr, int n)
+        {
+            Console.Write("Selection sort: ");
+            for (int i = 0; i < n; i++)
+            {
+                int key = arr[i];
+                int j = i - 1;
+                while (j >= 0 && arr[j] > key)
+                {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+                arr[j + 1] = key;
+            }
+            DisplayArray(arr, n);
+        }
+        static void QuickSort(int[] arr, int left, int right)
         {
             if (left < right)
             {
                 int pivot = Partition(arr, left, right);
-
                 QuickSort(arr, left, pivot - 1);
                 QuickSort(arr, pivot + 1, right);
             }
         }
-
-        private static int Partition(int[] arr, int left, int right)
+        static int Partition(int[] arr, int left, int right)
         {
             int pivot = arr[right];
             int i = left - 1;
-
             for (int j = left; j < right; j++)
             {
-                if (arr[j] <= pivot)
+                if (pivot > arr[j])
                 {
                     i++;
-                    int temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
+                    Swap(ref arr[i], ref arr[j]);
                 }
             }
-
-            int temp1 = arr[i + 1];
-            arr[i + 1] = arr[right];
-            arr[right] = temp1;
+            Swap(ref arr[i + 1], ref arr[right]);
 
             return i + 1;
         }
-
     }
 }
