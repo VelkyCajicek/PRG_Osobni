@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1C8151EC-7E7A-451A-940C-D91F32792A0D}</ProjectGuid>
+    <ProjectGuid>{DC1636E3-B93B-4720-B9ED-81ACC319A773}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>HomeWork3</RootNamespace>
-    <AssemblyName>HomeWork3</AssemblyName>
+    <RootNamespace>SortingAlgorithms</RootNamespace>
+    <AssemblyName>SortingAlgorithms</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,9 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HackSoftware.cs" />
-    <Compile Include="Network.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
