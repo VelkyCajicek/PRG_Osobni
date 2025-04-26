@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Practice
 {
@@ -14,69 +6,36 @@ namespace Practice
     {
         static void Main(string[] args)
         {
-            int n = 11;
-            int[] arr = new int[n];
-            FillArray(arr, n);
-            MergeSort(arr, 0, n - 1);
-            DisplayArray(arr, n);
+            int n = 5;
+            int[] arr = { 0, 1, 2, 3, 5 };
+            Console.WriteLine(FactorialR(n));
+            Console.WriteLine(FactorialF(n));
+            Console.WriteLine(FactorialW(n));
             Console.ReadKey();
         }
-        static void DisplayArray(int[] arr, int n)
+        static int FactorialR(int n)
         {
-            for (int i = 0; i < n; i++)
-            {
-                Console.Write(i < n - 1 ? $"{arr[i]}, " : $"{arr[i]}\n");
-            }
+            return n == 0 ? 1 : n * FactorialR(n - 1);
         }
-        static void FillArray(int[] arr, int n)
+        static int FactorialF(int n)
         {
-            Random rnd = new Random();
-            for (int i = 0; i < n; i++)
+            int value = 1;
+            for (int i = 1; i < n + 1; i++)
             {
-                arr[i] = rnd.Next(0, 100);
+                value *= i;
             }
-            DisplayArray(arr, n);
+            return value;
         }
-        static void MergeSort(int[] arr, int left, int right)
+        static int FactorialW(int n)
         {
-            if(left < right)
+            int value = 1;
+            int i = 0;
+            while (i < n)
             {
-                int mid = (left + right) / 2;
-                MergeSort(arr, left, mid);
-                MergeSort(arr, mid + 1, right);
-                Merge(arr, left, mid, right);
+                i++;
+                value *= i;
             }
-        }
-        static void Merge(int[] arr, int left, int mid, int right)
-        {
-            int[] leftArray = new int[mid - left + 1];
-            int[] rightArray = new int[right - mid];
-
-            Array.Copy(arr, left, leftArray, 0, leftArray.Length);
-            Array.Copy(arr, mid + 1, rightArray, 0, rightArray.Length);
-
-            int i = 0; 
-            int j = 0; 
-            int k = left;
-
-            while (i < leftArray.Length && j < rightArray.Length)
-            {
-                if (leftArray[i] <= rightArray[j])
-                {
-                    arr[k++] = leftArray[i++];
-                }
-                else
-                {
-                    arr[k++] = rightArray[j++];
-                }
-            }
-
-            // Copy any remaining elements
-            while (i < leftArray.Length)
-                arr[k++] = leftArray[i++];
-
-            while (j < rightArray.Length)
-                arr[k++] = rightArray[j++];
+            return value;
         }
     }
 }

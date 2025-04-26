@@ -1,0 +1,37 @@
+/* Text options */
+h1{
+    color: blueviolet;
+    font-family: sans-serif;
+}
+div{
+    color: brown;
+    font-family: sans-serif;
+}
+body{
+    background-color: yellow;
+}
+table{
+    outline-style: auto;
+    outline-color: black;
+}
+/* Image options */
+img{
+    /* Forced change
+    width: 320px;
+    height: 320px;
+     Relative change */
+    height: 320px;
+    width: auto;
+}
+
+/* Hover options */
+a:hover {
+    cursor: default; /* Ensures the cursor isn't changed */
+    background-color: #c61313; /* Any color */
+}
+img{
+    transition: transform 0.3s ease; /* Simply to ensure a smooth transistion */
+}
+img:hover {
+    transform: scale(1.1); /* Enlarges image to 110% */
+}

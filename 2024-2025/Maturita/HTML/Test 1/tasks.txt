@@ -1,0 +1,22 @@
+CZ
+1. Udělejte barvu pozadí žlutou a barvu písmen hnědou
+2. Proveďte vhodné formátování titulků (tiskárna je hlavní titul, úvod, historie a typy jsou podtitulky a typy tiskáren jsou vedlejší titulky)
+3. Vložte obrázky dovnitř stránky html a ujistěte se, že jsou všechny vedle sebe (Proveďte obě metody (tabulka a formátování .css))
+4. Udělejte z obrázku 3D tiskárny odkaz na stránku Alza pro 3D tiskárny
+5. Udělejte z obrázku GameBoye odkaz, který po kliknutí zobrazí zdrojový obrázek 
+6. Vytvořte tabulku zobrazenou na obrázku data_table.png
+Následující úlohy by měly být vytvořeny uvnitř souboru .css
+7. Kdykoli najedete na odkaz, kurzor se nezmění a změní se barva pozadí
+8. Kdykoli najedete na obrázek, obrázek se zvětší
+9. Změňte písmo veškerého textu
+UK
+1. Make the background color yellow and the letter color black
+2. Make the appropriate formatting to the titles (printer is the main title, introduction, history and types are sub titles and the types of printers are sub-sub titles)
+3. Put the images inside of the html page and make sure they are all next to each other (Do both methods (table and using .css formatting))
+4. Make the image of the 3D printer into a link to the Alza page for 3D printers
+5. Make the image of the GameBoy into a link that displays the source image when clicked on 
+6. Create the table shown by the image data_table.png
+The following tasks should be created inside of .css file
+7. Whenever you hover over a link the cursor doesn't change and the background color changes
+8.  Whenever you hover over an image the image enlarges
+9. Change the font of all text
