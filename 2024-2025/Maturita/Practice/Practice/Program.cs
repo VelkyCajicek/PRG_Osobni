@@ -1,4 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.AccessControl;
 
 namespace Practice
 {
@@ -6,36 +10,44 @@ namespace Practice
     {
         static void Main(string[] args)
         {
-            int n = 5;
-            int[] arr = { 0, 1, 2, 3, 5 };
-            Console.WriteLine(FactorialR(n));
-            Console.WriteLine(FactorialF(n));
-            Console.WriteLine(FactorialW(n));
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string fileName = @"\test.txt";
+            string path = desktopPath + fileName;
+            // Option 1
+            CreateTextFile(path);
+            ReadTextFile(path);
+            File.Delete(path);
+            // Option 2
+            File.WriteAllText(path, "Works");
+            string text = File.ReadAllText(path);
+            Console.WriteLine(text);
+            File.Delete(path);
+
             Console.ReadKey();
         }
-        static int FactorialR(int n)
+        static void CreateTextFile(string path)
         {
-            return n == 0 ? 1 : n * FactorialR(n - 1);
-        }
-        static int FactorialF(int n)
-        {
-            int value = 1;
-            for (int i = 1; i < n + 1; i++)
+            if (!File.Exists(path))
             {
-                value *= i;
+                using(StreamWriter sw = File.CreateText(path))
+                {
+                    sw.Write("Works");
+                }
             }
-            return value;
         }
-        static int FactorialW(int n)
+        static void ReadTextFile(string path)
         {
-            int value = 1;
-            int i = 0;
-            while (i < n)
+            if (File.Exists(path))
             {
-                i++;
-                value *= i;
+                using(StreamReader sr = File.OpenText(path))
+                {
+                    string s = "";
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        Console.WriteLine(s);
+                    }
+                }
             }
-            return value;
         }
     }
 }

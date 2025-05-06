@@ -12,27 +12,49 @@ namespace ShapesPlayground
 {
     public partial class Form1 : Form
     {
-        Brush brush;
         Graphics g;
+        int x, y, size, speed;
+
+        private void p(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            g.FillEllipse(Brushes.Black, x, y, size, size);
+        }
+
         public Form1()
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Locks the size of the form
+            x = 0;
+            y = 0;
+            size = 25;
+            speed = 5;
         }
-
-        private void drawingPanel_MouseMove(object sender, MouseEventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            positionLabel.Text = $"({e.X}, {e.Y})";
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    y -= speed;
+                    break;
+                case Keys.S:
+                    y += speed;
+                    break;
+                case Keys.A:
+                    x -= speed;
+                    break;
+                case Keys.D:
+                    x += speed;
+                    break;
+            }
+            panel1.Invalidate();
         }
-
-        private void drawingPanel_MouseDown(object sender, MouseEventArgs e)
+        private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            
-        }
-
-        private void drawingPanel_Paint(object sender, PaintEventArgs e)
-        {
-            g = e.Graphics;
 
         }
     }

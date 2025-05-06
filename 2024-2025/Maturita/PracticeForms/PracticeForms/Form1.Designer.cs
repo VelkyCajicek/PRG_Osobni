@@ -1,4 +1,4 @@
-﻿namespace ShapesPlayground
+﻿namespace PracticeForms
 {
     partial class Form1
     {
@@ -28,27 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelCircles = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // panel1
+            // panelCircles
             // 
-            this.panel1.Location = new System.Drawing.Point(36, 43);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(725, 395);
-            this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panelCircles.Location = new System.Drawing.Point(28, 36);
+            this.panelCircles.Name = "panelCircles";
+            this.panelCircles.Size = new System.Drawing.Size(707, 383);
+            this.panelCircles.TabIndex = 0;
+            this.panelCircles.Paint += new System.Windows.Forms.PaintEventHandler(this.panelCircles_Paint);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelCircles);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.p);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.ResumeLayout(false);
 
@@ -56,7 +54,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelCircles;
     }
 }
 
