@@ -7,24 +7,28 @@ body{
   margin: 0;
   background: gray;
 }
-
 .slideshow{
   width: 80%;
   max-width: 600px;
-  text-align: center;
 }
-
 .slide{
   display: none;
   background-color: white;
   padding: 2rem;
-
 }
-
 .slide.active{
   display: block;
 }
-
 .controls{
-  margin-left: 3rem;
+  margin-left: 14rem;
+}
+h2{
+  font-size: 24pt;
+  text-align: center;
+}
+h3{
+  font-size: 20pt;
+}
+p{
+  font-size: 16pt;
 }
